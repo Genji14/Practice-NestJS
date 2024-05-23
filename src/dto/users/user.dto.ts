@@ -1,8 +1,8 @@
 import { ActiveYn } from "src/enums/activeYn";
 
-export class SearchUserDTO {
+export class UserDTO {
 
-    username : string;
+    username: string;
     fullname: string;
     role: string;
     projects: string[];
