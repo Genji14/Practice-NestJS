@@ -21,6 +21,13 @@ export class UserService {
     ];
   }
 
+  removeDiacritics(str: string) {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s/g, '');
+  }
+
   search(searchUserDto: SearchUserDTO): UserDTO[] {
     if (typeof searchUserDto.projects === 'string') {
       searchUserDto.projects = [searchUserDto.projects];
@@ -28,7 +35,10 @@ export class UserService {
     return this.users.filter((user) => {
       const { projects, ...searchWithNoProject } = searchUserDto;
       for (const property in searchWithNoProject) {
-        if (searchWithNoProject[property] !== user[property]) {
+        if (property === "activeYn" && searchWithNoProject[property] !== user[property]) {
+          return false;
+        }
+        if (property !== "activeYn" && !this.removeDiacritics(user[property]).toLowerCase().includes(this.removeDiacritics(searchWithNoProject[property]).toLowerCase())) {
           return false;
         }
       }

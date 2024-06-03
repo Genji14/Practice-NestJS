@@ -20,7 +20,7 @@ export class UserController {
   @Post("/insert")
   create(@Body() createUserDTO: CreateUserDTO): ResponseDTO {
     if (!this.userService.create(createUserDTO)) {
-      throw new HttpException('User is existed', HttpStatus.BAD_REQUEST);
+      throw new HttpException('User is existed', HttpStatus.CONFLICT);
     }
     return { statusCode: HttpStatus.CREATED, message: "Create user sucessfully !!" };
   }
@@ -38,5 +38,6 @@ export class UserController {
     if (!this.userService.delete(username)) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    return { statusCode: HttpStatus.NO_CONTENT, message: 'Delete user successfully !!' }  }
+    return { statusCode: HttpStatus.NO_CONTENT, message: 'Delete user successfully !!' }
+  }
 }
